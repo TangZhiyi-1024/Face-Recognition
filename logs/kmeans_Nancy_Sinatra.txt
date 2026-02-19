@@ -1,0 +1,12 @@
+FaceRecognizer loading: D:\PycharmProjects\Face-Recognition\data\clustering_gallery.pkl
+End of stream
+Save trained face clustering
+k-means objective (SSE) over iterations:
+  iter 000: 5.147406
+  iter 001: 2.505540
+  iter 002: 2.427441
+  iter 003: 2.273412
+  iter 004: 2.165005
+  iter 005: 2.113420
+  iter 006: 2.103024
+FaceClustering saving: D:\PycharmProjects\Face-Recognition\data\clustering_gallery.pkl

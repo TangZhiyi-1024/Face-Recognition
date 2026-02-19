@@ -1,0 +1,13 @@
+2026-02-19 12:49:26.418379: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-02-19 12:49:29.203350: I tensorflow/core/util/port.cc:153] oneDNN custom operations are on. You may see slightly different numerical results due to floating-point round-off errors from different computation orders. To turn them off, set the environment variable `TF_ENABLE_ONEDNN_OPTS=0`.
+2026-02-19 12:49:30.921955: I tensorflow/core/platform/cpu_feature_guard.cc:210] This TensorFlow binary is optimized to use available CPU instructions in performance-critical operations.
+To enable the following instructions: SSE3 SSE4.1 SSE4.2 AVX AVX2 AVX_VNNI FMA, in other operations, rebuild TensorFlow with the appropriate compiler flags.
+FaceRecognizer loading: D:\PycharmProjects\Face-Recognition\data\clustering_gallery.pkl
+End of stream
+Save trained face clustering
+k-means objective (SSE) over iterations:
+  iter 000: 9.197690
+  iter 001: 5.683973
+  iter 002: 5.649851
+  iter 003: 5.642717
+FaceClustering saving: D:\PycharmProjects\Face-Recognition\data\clustering_gallery.pkl
