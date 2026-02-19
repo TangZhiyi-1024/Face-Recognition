@@ -19,11 +19,9 @@ Parameters must be tuned experimentally to balance robustness and efficiency
 4.2.b5-4.2.c2
 举例：
 开摄像头训练 python -m cvproj_exc.training --video none --label tzy
-用数据集训练（这个就是不一定全都上，但是复制起来方便一点，所以我全列上了，酌情使用）
-python -m cvproj_exc.training --video "..\data\train_data\Al_Pacino\%04d.jpg"        --label Al_Pacino
+用数据集训练（train_data里可用的人如下）
 python -m cvproj_exc.training --video "..\data\train_data\Alan_Ball\%04d.jpg"       --label Alan_Ball
 python -m cvproj_exc.training --video "..\data\train_data\Manuel_Pellegrini\%04d.jpg" --label Manuel_Pellegrini
-python -m cvproj_exc.training --video "..\data\train_data\Maria_Shriver\%04d.jpg"   --label Maria_Shriver
 python -m cvproj_exc.training --video "..\data\train_data\Marina_Silva\%04d.jpg"    --label Marina_Silva
 python -m cvproj_exc.training --video "..\data\train_data\Nancy_Sinatra\%04d.jpg"   --label Nancy_Sinatra
 python -m cvproj_exc.training --video "..\data\train_data\Peter_Gilmour\%04d.jpg"   --label Peter_Gilmour
@@ -52,11 +50,9 @@ python -m cvproj_exc.training --mode cluster --video "..\data\train_data\Nancy_S
   iter 000: 82.861736
   iter 001: 25.468895
   iter 002: 7.189376
-python -m cvproj_exc.training --mode cluster --video "..\data\train_data\Al_Pacino\%04d.jpg"
+python -m cvproj_exc.training --mode cluster --video "..\data\train_data\Peter_Gilmour\%04d.jpg"
 k-means objective (SSE) over iterations:
-  iter 000: 116.161579
-  iter 001: 10.717045
-  iter 002: 7.189376
+  (见本次运行终端输出)
 测试部分
 python -m cvproj_exc.test --mode cluster --video "..\data\test_data\Alan_Ball\%04d.jpg"
 

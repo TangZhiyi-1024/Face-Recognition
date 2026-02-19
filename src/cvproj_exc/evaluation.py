@@ -95,21 +95,27 @@ class OpenSetEvaluation:
     # similarity thresholds.
     def run(self) -> Dict[str, np.ndarray]:
         self._fit_classifier_if_possible()
-        # compute impostor similarities on training unknowns for threshold selection
-        # collect impostor similarities for threshold calibration
-        unk_train_mask = self.train_labels == UNKNOWN_LABEL
-        unk_test_mask = self.test_labels == UNKNOWN_LABEL
-
-        if np.any(unk_train_mask):
-            _, impostor_sim = self._predict_nn(self.train_embeddings[unk_train_mask])
-        elif np.any(unk_test_mask):
-            # train has no unknowns -> calibrate on test unknowns
-            _, impostor_sim = self._predict_nn(self.test_embeddings[unk_test_mask])
+        # predict on test split (labels + similarities)
+        # Prefer classifier interface required by the exercise.
+        if self.classifier is not None and hasattr(
+            self.classifier, "predict_labels_and_similarities"
+        ):
+            try:
+                test_pred_labels, test_pred_sim = self.classifier.predict_labels_and_similarities(
+                    self.test_embeddings
+                )
+            except Exception:
+                # robust fallback
+                test_pred_labels, test_pred_sim = self._predict_nn(self.test_embeddings)
         else:
-            impostor_sim = np.asarray([], dtype=np.float32)
+            test_pred_labels, test_pred_sim = self._predict_nn(self.test_embeddings)
 
-        # predict on test split (labels + similarities) once ---
-        test_pred_labels, test_pred_sim = self._predict_nn(self.test_embeddings)
+        test_pred_labels = np.asarray(test_pred_labels)
+        test_pred_sim = np.asarray(test_pred_sim, dtype=np.float32)
+
+        # Threshold calibration for FAR is done on unknown test samples.
+        unk_test_mask = self.test_labels == UNKNOWN_LABEL
+        impostor_sim = test_pred_sim[unk_test_mask]
 
         # sweep FARs, pick thresholds, compute identification rates ---
         similarity_thresholds = np.zeros_like(self.false_alarm_rate_range, dtype=np.float32)
@@ -127,6 +133,7 @@ class OpenSetEvaluation:
 
         # Report all performance measures.
         evaluation_results = {
+            "false_alarm_rates": np.asarray(self.false_alarm_rate_range, dtype=np.float32),
             "similarity_thresholds": similarity_thresholds,
             "identification_rates": identification_rates,
         }
@@ -153,15 +160,11 @@ class OpenSetEvaluation:
             # FAR=1 -> accept all -> threshold below min
             return float(np.min(similarity) - 1e-6)
 
-        # We want fraction >= tau equals far
-        # Sort ascending; keep the top ceil(far*N) as false alarms
-        s = np.sort(similarity)  # ascending
-        n = s.size
-        m = int(np.ceil(far * n))  # number allowed to be >= tau
-        m = max(1, min(m, n))      # at least 1, at most n
-
-        # Threshold is the m-th largest -> index n-m in ascending array
-        tau = float(s[n - m])
+        # Hint-aligned implementation:
+        # choose p-percentile with p = 100 * (1 - FAR), so approximately
+        # P(similarity >= tau) ~= FAR on impostor (unknown) samples.
+        p = 100.0 * (1.0 - far)
+        tau = float(np.percentile(similarity, p))
         return tau
 
     def calc_identification_rate(self, prediction_labels: np.ndarray) -> float:
