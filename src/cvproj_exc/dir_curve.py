@@ -1,4 +1,4 @@
-﻿import matplotlib.pyplot as plt
+import matplotlib.pyplot as plt
 import numpy as np
 
 from cvproj_exc.classifier import NearestNeighborClassifier
@@ -24,9 +24,6 @@ def main():
     )
     evaluation.prepare_input_data(train_data_file, test_data_file)
 
-    # print("train labels unique:", np.unique(evaluation.train_labels, return_counts=True))
-    # print("test  labels unique:", np.unique(evaluation.test_labels, return_counts=True))
-
     # Run the evaluation and retrieve the performance measures (identification rates and
     # false alarm rates) on the test dataset.
     results = evaluation.run()
@@ -47,7 +44,6 @@ def main():
     plt.xlabel("False alarm rate")
     plt.ylabel("Identification rate")
     plt.show()
-
 
 
 if __name__ == "__main__":
